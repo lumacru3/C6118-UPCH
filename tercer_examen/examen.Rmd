@@ -4,6 +4,17 @@ author: "Lucía Maldonado Cruzado"
 output: html_document
 ---
 
+```{r kali, eval=FALSE}
+install.packages("devtools")
+devtools::install_github("roliveros-ramos/kali")
+```
+
+
+```{r check, fig.width=4, fig.height=4, fig.cap="Ejemplo del uso de la funciÃ³n kali::image.plot"}
+```
+
+
+
 ## Introducción
 
 Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990 tanto de temperaturas superficiales como también salinidades y otros parámetros...
