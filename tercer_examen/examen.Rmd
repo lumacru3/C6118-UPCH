@@ -1,16 +1,20 @@
 ---
-title: "AnÃ¡lisis de las condiciones del ocÃ©ano frente a PerÃº durante mi primer aÃ±o de vida"
-author: "Su nombre"
+title: "Análisis de las condiciones del océano frente a Perú durante el año 1990"
+author: "Lucía Maldonado Cruzado"
 output: html_document
 ---
 
-## IntroducciÃ³n
+## Introducción
 
-## Materiales y mÃ©todos
+Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990 tanto de temperaturas superficiales como también salinidades y otros parámetros...
 
-## Resultados y discusiÃ³n
+## Materiales y métodos
+
+## Resultados y discusión
 
 ## Conclusiones
+
+
 
 ## Referencias
 
