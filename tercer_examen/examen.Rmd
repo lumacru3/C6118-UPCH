@@ -1,8 +1,26 @@
 ---
-title: "Análisis de las condiciones del océano frente a Perú durante el año 1990"
+title: "Análisis de las condiciones del océano frente a Perú durante el año 1990 - Tercer Examen Programación Científica"
 author: "Lucía Maldonado Cruzado"
+date: "6 de Julio del 2017"
 output: html_document
+keep_md: true
+
 ---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ncdf4)
+library(fields)
+#install.packages("devtools")
+#devtools::install_github("roliveros-ramos/kali")
+library(kali)
+```
+
 
 ```{r kali, eval=FALSE}
 install.packages("devtools")
@@ -10,9 +28,21 @@ devtools::install_github("roliveros-ramos/kali")
 ```
 
 
-```{r check, fig.width=4, fig.height=4, fig.cap="Ejemplo del uso de la funciÃ³n kali::image.plot"}
-```
+```{r check, fig.width=4, fig.height=4, fig.cap="Ejemplo del uso de la función kali::image.plot"}
 
+library(ncdf4)
+library(fields)
+library(kali)
+
+nc = nc_open("datos/sst.nc4")
+sst = ncvar_get(nc, "to")
+lat = ncvar_get(nc, "latitude")
+lon = ncvar_get(nc, "longitude") - 360
+image.map(lon, lat, sst[,,1])
+
+
+
+```
 
 
 ## Introducción
@@ -22,6 +52,8 @@ Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú 
 ## Materiales y métodos
 
 ## Resultados y discusión
+
+
 
 ## Conclusiones
 
