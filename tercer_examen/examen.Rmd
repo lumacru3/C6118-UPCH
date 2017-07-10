@@ -1,7 +1,7 @@
 ---
 title: "Análisis de las condiciones del océano frente a Perú durante el año 1990 - Tercer Examen Programación Científica"
 author: "Lucía Maldonado Cruzado"
-date: "6 de Julio del 2017"
+date: "9 de Julio del 2017"
 output: html_document
 keep_md: true
 
@@ -286,7 +286,16 @@ A diferencia del fitoplancton pequeño la mayor abundancia de fitoplancton de gra
 
 ## Conclusiones
 
+* El análisis de TSM indica que el año 1990 presenta mayor cantidad de anomalías frías por lo que es considerado un año frío. No presenta anomalías suficientes como para ser considerado un año niña ya que las anomalías no sobrepasaron los 0.5° en ningún mes del año. 
 
+* En general la salinidad presentó valores bajos a promedio, la salinidad también influye sobre la cantidad de gases disueltos en el medio acuoso ya que a mayor salinidad menor capacidad de los gases de diluirse. Se tendría que analizar los datos de Oxígeno disuelto para observar dicha relación que debería evidenciar valores normales de Oxígeno para este año.
+
+* Los valores de abundancia de fitoplancton varían respecto al tamaño de este. Se observó una predominancia en general del fitoplancton de pequeño tamaño, esto podría verse influenciado por una baja cantidad de nutrientes lo que también se relaciona con la baja abundancia de fitoplancton grande como son las diatomeas. 
+
+* Es necesario un análisis de los nutrientes disponibles así como de la intensidad de los vientos para completar el análisis de productividad primaria ya que ambos factores influyen bastante en la proliferación de comunidades de fitoplancton.
 
 ## Referencias
 
+* Marco Espino et. al. IMARPE. 1990. - *"Situación de los stocks de peces demersales en el otoño 1990"*. 
+
+* CENEPRED. 2013. - *"Escenario de Riesgos ante el Fenómeno La Niña en la costa del Perú / Perú. Centro Nacional de Estimación, Prevención y Reducción del Riesgo de Desastres. Lima: CENEPRED."*
