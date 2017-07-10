@@ -82,11 +82,11 @@ Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú 
 
 # Materiales y métodos
 
-Para lograr realizar los gráficos que caracterizan las costas de Perú durante 1990 se proporcionaron 4 bases de datos. La propiedad que mejor describe el ecosistema costero es la temperatura superficial del mar que se extrajo del archivo "sst.nc4" como temperatura potencial superficial. Las unidades se encontraban en grados celcius por lo que no se tuvo que hacer ninguna conversión. De este mismo archivo de temperaturas se extrajeron los márgenes de latitud y longitud que se recortaron para realizar solo el análisis en el mar peruano. 
+Para lograr realizar los gráficos que caracterizan las costas de Perú durante 1990 se proporcionaron 4 bases de datos. La propiedad que mejor describe el ecosistema costero es la temperatura superficial del mar que se extrajo del archivo *"sst.nc4"* como temperatura potencial superficial. Las unidades se encontraban en grados celcius por lo que no se tuvo que hacer ninguna conversión. De este mismo archivo de temperaturas se extrajeron los márgenes de latitud y longitud que se recortaron para realizar solo el análisis en el mar peruano. 
 
 La serie de tiempo de datos proporcionada contiene 30 años de información desde el año 1959 hasta el año 2005 en la unidad de meses. Debido a que el análisis se realizó solo del año 1990 se tuvieron que extraer los parámetros dentro de los 12 meses de 1990 (361:372, ya que la serie de meses iniciaba en 0 hasta 552). El parámetro de tiempo del archivo de temperatura también se usó para los siguientes gráficos.
 
-El archivo sss.nc4 se utilizó para extraer los datos de salinidad en unidades UPS. Posteriormente se obtuvieron los datos de fitoplancton de los archivos lphy.c4 y sphy.nc4 que tuvieron que ser modificados para obtener la abundancia de fitoplancton en micromoles por metro cuadrado al segundo. 
+El archivo sss.nc4 se utilizó para extraer los datos de salinidad en unidades UPS. Posteriormente se obtuvieron los datos de fitoplancton de los archivos *"lphy.c4"* y *"sphy.nc4"* que tuvieron que ser modificados para obtener la abundancia de fitoplancton en micromoles por metro cuadrado al segundo. 
 
 # Resultados 
 
@@ -185,7 +185,7 @@ Esto coincide con la bibliografía que menciona que las salinidades estuvieron po
 ```{r , fig.width=8, fig.height=7, fig.cap=" Salinidad mensual durante 1990 (UPS) ",echo=FALSE, fig.align="center"}
 
 sss_mes= array(dim=c(dim(sss)[1:2], 12)) 
-
+par(oma=c(0,0,0,2))
 par(mfrow=c(3,4), mar=c(3,3,3,4)) 
 
 for (i in 1:4){
@@ -206,41 +206,43 @@ for (i in 9:12){
 
 Como se observa en la imagen superior la salinidad disminuye en los meses de marzo y abril y tiene la mayor salinidad en enero. A continuación se comparará la salinidad con la temperatura de ambos meses.
 
-```{r , fig.width=8, fig.height=7, fig.cap=" Temperatura vs Salinidad ",echo=FALSE, fig.align="center"}
-
-par(mfrow=c(2,2), mar=c(4,4,1,2))
-image.map(lon, lat, sst_mes[,,1], main=paste(month.name[1]))
-image.map(lon, lat, sss_mes[,,1], main=paste(month.name[1]))
-image.map(lon, lat, sst_mes[,,4], main=paste(month.name[4]))
-image.map(lon, lat, sss_mes[,,4], main=paste(month.name[4]))
+```{r , fig.width=7, fig.height=7, fig.cap=" Temperatura vs Salinidad ",echo=FALSE, fig.align="center"}
+par(oma=c(0,0,0,2))
+par(mfrow=c(2,2), mar=c(4,4,2,2))
+image.map(lon, lat, sst_mes[,,1], main=paste("°C",month.name[1]))
+image.map(lon, lat, sss_mes[,,1], main=paste("UPS",month.name[1]))
+image.map(lon, lat, sst_mes[,,4], main=paste("°C",month.name[4]))
+image.map(lon, lat, sss_mes[,,4], main=paste("UPS",month.name[4]))
 
 ```
 Las bajas salinidades están asociadas a una disminución de la temperatura en el mes de abril, sin embargo, lo contrario ocurre en el mes de enero estas diferencias podrían estar asociadas a corrientes.
 
 ##Análisis de Producción primaria
 
+El ecosistema peruano es altamente productivo y eso se evidencia en la abundancia de fitoplancton. Las diferencias en el tamaño del fitoplancton también significan diferencias en la disponibilidad de nutrientes y condiciones físicas como la turbulencia, y la surgencia de aguas profundas. Según la bibliografía cuando existe una menor disponibilidad de nutrientes el fitoplancton suele ser de menor tamaño ya que la absorción de estos es más eficiente, en este caso se encontrarían más dinoflagelados. Normalmente los periodos de surgencia están asociados a una mayor disponibilidad de nitratos lo que beneficiaría la proliferación de fitoplancton de mayor tamaño como las diatomeas. 
+
 ###Promedio general de fitoplancton
 ```{r , fig.width=5, fig.height=5, fig.cap=" ",echo=FALSE, fig.align="center"}
 par(oma=c(0,0,0,2))
 image.map(lon, lat, promtodofito, main="Promedio total fitoplancton 1990", legend.lab = "µmol C m-2 s-1", legend.width = 0.5)
 ```
-
+La mayor abundancia de fitoplancton se encuentra cercana a la costa peruana sostenida por la alta productividad del sistema de surgencia además de los nutrientes proporcionados por la plataforma. Aparte se puede observar la abundancia a la largo de la Zona de convergencia intertropical. 
 
 ```{r , fig.width=8, fig.height=3, fig.cap=" Fitoplancton pequeño vs grande micromol/m2/s ",echo=FALSE, fig.align="center"}
-
+par(oma=c(0,0,0,2))
 par(mfrow=c(1,2), mar=c(4,4,1,2))
 
   image.map(lon, lat, promsphy90, main="Fitoplancton pequeño")
   image.map(lon, lat, promlphy90, main="Fitoplancton grande")
 
 
-
-
 ```
+Las diferencias entre ambos gráficos son notorias, sin embargo, se debe tener en cuenta la escala que es mucho mayor para el fitoplancton pequeño lo que demuestra su predominancia a lo largo de la costa peruana en el año 1990. El fitoplancton grande representado por las diatomeas presenta su mayor abundancia a lo largo de la costa hasta Nazca en donde disminuye, esto estaría asociado al tamaño de la plataforma que al incrementar la latitud esta disminuye. 
 
 ###Fitoplancton pequeño
 
 ```{r , fig.width=8, fig.height=7, fig.cap=" Fitoplancton pequeño micromol/m2/s ",echo=FALSE, fig.align="center"}
+par(oma=c(0,0,0,2))
 par(mfrow=c(4,3), mar=c(4,4,1,4))
 meses = rep(1:12, length=length(t1990))
 sphy_mes= array(dim=c(dim(sfito)[1:2], 12)) 
@@ -250,11 +252,23 @@ for (i in 1:12){
   image.map(lon, lat, sphy_mes[,,i], main=paste(month.name[i]))
 }
 
+```
+Los picos de abundancia de fitoplancton de tamaño reducido se encuentran asociados con los meses cálidos, esto a su vez tiene relación con la surgencia de aguas frías como se pudo ver en los gráficos de TSM. También se puede observar que el mes con la menor abundancia de fitoplancton pequeño es septiebre caracterizado por TSM frías. A continuación se compara la TSM con la abundancia de los meses de mayor y menor abundancia.
 
+```{r , fig.width=7, fig.height=7, fig.cap=" Temperatura vs Fitopqueño ",echo=FALSE, fig.align="center"}
+par(oma=c(0,0,0,2))
+par(mfrow=c(2,2), mar=c(4,4,2,2))
+image.map(lon, lat, sst_mes[,,3], main=paste("°C", month.name[3]))
+image.map(lon, lat, sphy_mes[,,3], main=paste("Fitop pequeño µmol/m2*s",month.name[3]))
+image.map(lon, lat, sst_mes[,,6], main=paste("°C",month.name[6]))
+image.map(lon, lat, sphy_mes[,,6], main=paste("Fitop pequeño µmol/m2*s",month.name[6]))
 
 ```
+Se evidencia una diferencia más notoria en la distribución del fitoplancton más que en la abundancia en relación a las estaciones y sus respectivas temperaturas. En el norte del Perú a la altura de Tumbes se llegan a valores de 1µmol por metro cuadrado en el mes de verano (marzo) con temperaturas promedio acercándose a los 27°C. También se observa una abundancia de 0.9 µmol en el sur del país (Tacna).
+
 ###Fitoplancton grande
 ```{r , fig.width=8, fig.height=7, fig.cap=" Fitoplancton grande micromol/m2/s ",echo=FALSE, fig.align="center"}
+par(oma=c(0,0,0,2))
 par(mfrow=c(4,3), mar=c(4,4,1,4))
 meses = rep(1:12, length=length(t1990))
 lphy_mes= array(dim=c(dim(lfito)[1:2], 12)) 
@@ -267,7 +281,7 @@ for (i in 1:12){
 
 
 ```
-Como se mencionó previamente la producción primaria en las costas peruanas es impulsada por las surgencias de aguas profundas que como se mostró en los gráficos de temperatura era más evidente en los meses de verano. Por ello se grafica la siguiente figura con la producción de fitoplancton total (pequeño y grande) en los meses de verano.
+A diferencia del fitoplancton pequeño la mayor abundancia de fitoplancton de gran tamaño ocurre en los meses fríos (julio-septiembre) alcanzando los 0.7 µmol por metro cuadrado. Sin embargo no es comparable con la gran mayor abundancia de fitoplancton pequeño que alcanzó su máximo a 1 µmol por metro cuadrado. Para poder explicar con mayor precisión se deberían estudiar también la intensidad de los vientos así como la disponibilidad de nitratos y fosfatos.
 
 
 ## Conclusiones
