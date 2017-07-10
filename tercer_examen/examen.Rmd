@@ -12,47 +12,253 @@ keep_md: true
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r packages, echo=FALSE, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(ncdf4)
-library(fields)
-#install.packages("devtools")
-#devtools::install_github("roliveros-ramos/kali")
-library(kali)
-```
-
-
-```{r kali, eval=FALSE}
+```{r kali, eval=FALSE, echo=FALSE, include=FALSE}
 install.packages("devtools")
 devtools::install_github("roliveros-ramos/kali")
 ```
 
 
-```{r check, fig.width=4, fig.height=4, fig.cap="Ejemplo del uso de la función kali::image.plot"}
+```{r, echo=FALSE, include=FALSE }
 
 library(ncdf4)
 library(fields)
 library(kali)
 
-nc = nc_open("datos/sst.nc4")
-sst = ncvar_get(nc, "to")
-lat = ncvar_get(nc, "latitude")
-lon = ncvar_get(nc, "longitude") - 360
-image.map(lon, lat, sst[,,1])
+data_sst = nc_open("datos/sst.nc4")
+data_sss = nc_open("datos/sss.nc4")
+data_lphy = nc_open("datos/lphy.nc4")
+data_sphy = nc_open("datos/sphy.nc4")
+# Definir variables generales -------------------------------------------------------
+
+sst = ncvar_get(data_sst, "to")
+sss = ncvar_get(data_sss, "so")
+lat = ncvar_get(data_sst, "latitude")
+lon = ncvar_get(data_sst, "longitude") - 360
+time = ncvar_get(data_sst, "time")
+time2 = ncvar_get(data_lphy, "time")
+time2 = time
+lphy = ncvar_get(data_lphy, "intpp")
+sphy = ncvar_get(data_sphy, "intpp")
+sfito = sphy * 10^6
+lfito = lphy * 10^6
+totalfito = sfito + lfito
+
+# SOLO DATOS 1990 ---------------------------------------------------------------
+
+t1990 = time[361:372]
+sst1990 = sst[,,361:372]
+sss1990 = sss[,,361:372]
+lphy1990 = lfito[,,361:372]
+sphy1990 = sfito[,,361:372]
+fito1990 = totalfito[,,361:372]
+
+#PROMEDIO DATOS 1990
+
+promsst90 = apply(sst1990, MARGIN = c(1,2), FUN=mean)
+promsss90 = apply(sss1990, MARGIN = c(1,2), FUN=mean)
+promlphy90 = apply(lphy1990, MARGIN = c(1,2), FUN=mean)
+promsphy90 = apply(sphy1990, MARGIN = c(1,2), FUN=mean)
+
+#PROMEDIO DATOS TOTAL 1959 - 2005
+
+promsst = apply(sst, MARGIN = c(1,2), FUN=mean)
+promsss = apply(sss, MARGIN = c(1,2), FUN=mean)
+promlphy = apply(lfito, MARGIN = c(1,2), FUN=mean)
+promsphy = apply(sfito, MARGIN = c(1,2), FUN=mean)
+
+#ANOMALIAS 1990 CON RESPECTO A PROMEDIO TOTAL
+
+anomsst90 = promsst - promsst90
+anomsss90 = promsss - promsss90
+anomlphy90 = promlphy - promlphy90
+anomsphy90 = promsphy - promsphy90
 
 
 
 ```
 
 
-## Introducción
+# Introducción
 
-Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990 tanto de temperaturas superficiales como también salinidades y otros parámetros...
+Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990. Se utilizaron datos de temperatura superficial del mar (TSM), salinidad en UPS y fitoplancton pequeño y grande. Los gráficos se realizaron con Rstudio. 
 
-## Materiales y métodos
+# Materiales y métodos
 
-## Resultados y discusión
 
+
+# Resultados 
+
+##Análisis Temperatura Superficial del Mar
+
+El Perú es un país que se encuentra en una zona tropical, sin embargo no posee un clima tropical lo que se debe a la temperatura del mar que influencia la temperatura del aire y a su vez crea una atmósfera estable.
+
+Debido a la gran importancia de la regulación atmosférica que posee nuestro mar, su estudio es necesario y es por ello que se toman constantemente medidas de la temperatura del mar a lo largo de series de tiempo muy extensas. En este estudio se concentra la información obtenida en el año 1990. 
+
+
+```{r check, fig.width=6, fig.height=6, fig.cap=" ",echo=FALSE}
+
+#par(oma=c(0,0,0,1))
+
+image.map(lon, lat, promsst90, legend.width = 0.6, legend.lab = "°C")
+title("Distribución de temperaturas en el año 1990")
+
+```
+En el gráfico de distribución de temperaturas en el año 1990 se observa que a lo largo de la costa peruana las temperaturas no sobrepasan los 24°C. y que a partir de la costa central las temperaturas bajan hasta los 20°C y menos. 
+
+```{r , fig.width=4, fig.height=4, fig.cap=" ",echo=FALSE, fig.align="center"}
+
+#par(oma=c(0,0,0,1))
+
+image.map(lon, lat, anomsst90)
+title("Anomalías T° 1990")
+
+```
+Cuando comparamos el año 1990 con el resto de los datos proporcionados que abarcan 46 años de nuestreo de TSM, se puede observar una anomalía negativa en el norte de la costa peruana lo que indicaría que es un año con tendencia fría. 
+
+```{r , fig.width=8, fig.height=6, fig.cap="VARIACIÓN DE LA TEMPERATURA DURANTE TODOS LOS MESES DE 1990 ",echo=FALSE, fig.align="center"}
+meses = rep(1:12, length=length(t1990))
+
+sst_mes= array(dim=c(dim(sst)[1:2], 12)) 
+
+par(mfrow=c(3,4), mar=c(3,3,3,4)) 
+
+for (i in 1:12){
+  sst_mes[,,i] = apply(sst[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, sst_mes[,,i], main=paste(month.name[i]))
+}
+
+```
+
+Cuando vemos el gráfico de las diferencias de temperatura a lo largo de todos los meses del año se observa la estacionalidad bien marcada siendo los meses más fríos los de julio, agosto y setiembre, que vendrían a representar el invierno en el hemisferio sur. A partir del mes de julio se hace evidente este enfriamiento sobretodo a partir de los 10°S llegando a temperaturas de 18°C. 
+
+```{r , fig.width=7, fig.height=3, fig.cap="VARIACIÓN DE TEMPERATURAS EN VERANO 1990 ",echo=FALSE, fig.align="center"}
+par(mfrow=c(1,3), mar=c(4,4,2,2)) 
+
+for (i in 1:3){
+  sst_mes[,,i] = apply(sst[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, sst_mes[,,i], main=paste(month.name[i]))
+}
+```
+
+Como se sabe las costas peruanas son altamente productivas y esto se debe a que se trata de un ecosistema que está influenciado por la surgencia de aguas profundas que traen consigo nutrientes que desecadenan el desarrollo de la producción primaria y por ende impulsan la productividad del ecosistema en general. Una manera de notar la presencia de este levantamiento de aguas profundas es mediante la diferencia de temperaturas en la costa. Al subir estas aguas profundas logran disminuir la temperatura costera, este fenómeno es más evidente en el verano ya que la temperatura promedio de incrementa en los meses de verano (24°C) sin embargo, las aguas de surgencia mantienen una temperatura baja (22°C). 
+
+
+```{r , fig.width=6, fig.height=4, fig.cap=" Diagrama Hovmoller ",echo=FALSE, fig.align="center"}
+
+RES=sweep(sst1990, c(1,2), promsst, "-") 
+
+par(mfrow=c(1,1))
+hov1 = apply(RES, MARGIN = c(2,3), FUN = mean, na.rm = TRUE) #promedio SST en todo el tiempo
+
+Hovmuller1=image.plot(1:12, lat, t(hov1), las=1,ylim=c(-20,0), xlab="Tiempo", ylab="Latitud", axes=FALSE, nlevel=2000, legend.lab = "°C")
+
+title("Anomalías de temperatura a lo largo de 1990")
+ejey = paste(abs(axTicks(2)), ifelse(axTicks(2)>0, "°N", "°S"), sep="") 
+axis(2, at=axTicks(2), labels=ejey, las=1) 
+points(-5,1) #truco para retomar el foco en el eje, se buscará una mejor solución
+axis(1, at=1:12, labels=month.name)
+box()
+```
+
+En el diagrama de anomalías a lo largo del año 1990 se puede identificar fácilmente que la mayor anomalía de temperatura se da en el mes de marzo alcanzando más de 3 grados de anomalía. Por otro lado en el mes de setiembre se encuentra la mayor anomalía negativa alcanzando temperaturas con anomalías negativas menores a -2°C.
+
+##Análisis de Salinidad
+
+```{r , fig.width=5, fig.height=6, fig.cap=" Salinidad promedio y anomalías durante 1990 (UPS) ",echo=FALSE, fig.align="center"}
+
+par(mfrow=c(2,1), mar=c(0,0,0,0), oma=c(5,5,3,3))
+
+image.map(lon, lat, promsss90, legend.lab = "UPS")
+
+image.map(lon, lat, anomsss90, legend.lab = "UPS")
+
+```
+
+El año 1990 presenta una salinidad promedio de 35 UPS, este valor está dentro de las salinidades que son consideradas normales para el agua de mar, sin embargo, para el gráfico de anomalías se observa una ligera anomalía en el promedio, es necesario analizar cada mes para localizar en qué momento del año se desarrolla dicha anomalía.
+
+```{r , fig.width=8, fig.height=7, fig.cap=" Salinidad mensual durante 1990 (UPS) ",echo=FALSE, fig.align="center"}
+
+sss_mes= array(dim=c(dim(sss)[1:2], 12)) 
+
+#par(mfrow=c(3,4), mar=c(4,4,1,1))
+#for (i in 1:12){
+  #sss_mes[,,i] = apply(sss[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  #image.map(lon, lat, sss_mes[,,i], main=paste(month.name[i]))
+#}
+
+par(mfrow=c(3,4), mar=c(3,3,3,4)) #se coloca partición del gráfico antes de realizar el for
+
+for (i in 1:4){
+  sss_mes[,,i] = apply(sss[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, sss_mes[,,i], main=paste(month.name[i]))
+}
+
+for (i in 5:8){
+  sss_mes[,,i] = apply(sss[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, sss_mes[,,i], main=paste(month.name[i]))
+}
+
+for (i in 9:12){
+  sss_mes[,,i] = apply(sss[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, sss_mes[,,i], main=paste(month.name[i]))
+}
+```
+
+Como se observa en la imagen superior la salinidad disminuye en los meses de marzo y abril y tiene la mayor salinidad en enero. A continuación se comparará la salinidad con la temperatura de ambos meses.
+
+```{r , fig.width=8, fig.height=7, fig.cap=" Temperatura vs Salinidad ",echo=FALSE, fig.align="center"}
+
+par(mfrow=c(2,2), mar=c(4,4,1,1))
+image.map(lon, lat, sst_mes[,,1], main=paste(month.name[1]))
+image.map(lon, lat, sss_mes[,,1], main=paste(month.name[1]))
+image.map(lon, lat, sst_mes[,,4], main=paste(month.name[4]))
+image.map(lon, lat, sss_mes[,,4], main=paste(month.name[4]))
+
+```
+##Análisis de Producción primaria
+
+###Promedio general de fitoplancton
+```{r , fig.width=8, fig.height=3, fig.cap=" Fitoplancton pequeño vs grande micromol/m2/s ",echo=FALSE, fig.align="center"}
+par(mfrow=c(1,2), mar=c(4,4,1,1))
+
+  image.map(lon, lat, promsphy90, main="Fitoplancton pequeño")
+  image.map(lon, lat, promlphy90, main="Fitoplancton grande")
+
+
+
+
+```
+
+###Fitoplancton pequeño
+
+```{r , fig.width=8, fig.height=7, fig.cap=" Fitoplancton pequeño micromol/m2/s ",echo=FALSE, fig.align="center"}
+par(mfrow=c(4,3), mar=c(4,4,1,4))
+meses = rep(1:12, length=length(t1990))
+sphy_mes= array(dim=c(dim(sfito)[1:2], 12)) 
+
+for (i in 1:12){
+  sphy_mes[,,i] = apply(sfito[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, sphy_mes[,,i], main=paste(month.name[i]))
+}
+
+
+
+```
+###Fitoplancton grande
+```{r , fig.width=8, fig.height=7, fig.cap=" Fitoplancton grande micromol/m2/s ",echo=FALSE, fig.align="center"}
+par(mfrow=c(4,3), mar=c(4,4,1,4))
+meses = rep(1:12, length=length(t1990))
+lphy_mes= array(dim=c(dim(lfito)[1:2], 12)) 
+
+for (i in 1:12){
+  lphy_mes[,,i] = apply(lfito[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
+  image.map(lon, lat, lphy_mes[,,i], main=paste(month.name[i]))
+}
+
+
+
+```
+Como se mencionó previamente la producción primaria en las costas peruanas es impulsada por las surgencias de aguas profundas que como se mostró en los gráficos de temperatura era más evidente en los meses de verano. Por ello se grafica la siguiente figura con la producción de fitoplancton total (pequeño y grande) en los meses de verano.
 
 
 ## Conclusiones
