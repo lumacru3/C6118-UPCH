@@ -77,16 +77,20 @@ anomsphy90 = promsphy - promsphy90
 
 # Introducción
 
-Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990. Se utilizaron datos de temperatura superficial del mar (TSM), salinidad en UPS y fitoplancton pequeño y grande (micromol por metro cuadrado por segundo). Los gráficos se realizaron con Rstudio. 
+Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990. Se utilizaron datos de temperatura superficial del mar (TSM), salinidad en UPS y fitoplancton pequeño y grande (micromol por metro cuadrado por segundo) proporcionados por el profesor del curso. Los gráficos se realizaron con Rstudio utilizando los paquetes:
+
+* **ncdf4**
+* **fields**
+* **kali**
 
 
 # Materiales y métodos
 
-Para lograr realizar los gráficos que caracterizan las costas de Perú durante 1990 se proporcionaron 4 bases de datos. La propiedad que mejor describe el ecosistema costero es la temperatura superficial del mar que se extrajo del archivo *"sst.nc4"* como temperatura potencial superficial. Las unidades se encontraban en grados celcius por lo que no se tuvo que hacer ninguna conversión. De este mismo archivo de temperaturas se extrajeron los márgenes de latitud y longitud que se recortaron para realizar solo el análisis en el mar peruano. 
+Para lograr realizar los gráficos que caracterizan las costas de Perú durante 1990 se proporcionaron 4 bases de datos. La propiedad que mejor describe el ecosistema costero es la temperatura superficial del mar que se extrajo del archivo **"sst.nc4"** como temperatura potencial superficial. Las unidades se encontraban en grados celcius por lo que no se tuvo que hacer ninguna conversión. De este mismo archivo de temperaturas se extrajeron los márgenes de latitud y longitud que se recortaron para realizar solo el análisis en el mar peruano. 
 
 La serie de tiempo de datos proporcionada contiene 30 años de información desde el año 1959 hasta el año 2005 en la unidad de meses. Debido a que el análisis se realizó solo del año 1990 se tuvieron que extraer los parámetros dentro de los 12 meses de 1990 (361:372, ya que la serie de meses iniciaba en 0 hasta 552). El parámetro de tiempo del archivo de temperatura también se usó para los siguientes gráficos.
 
-El archivo sss.nc4 se utilizó para extraer los datos de salinidad en unidades UPS. Posteriormente se obtuvieron los datos de fitoplancton de los archivos *"lphy.c4"* y *"sphy.nc4"* que tuvieron que ser modificados para obtener la abundancia de fitoplancton en micromoles por metro cuadrado al segundo. 
+El archivo sss.nc4 se utilizó para extraer los datos de salinidad en unidades UPS. Posteriormente se obtuvieron los datos de fitoplancton de los archivos **"lphy.c4"** y **"sphy.nc4"** que tuvieron que ser modificados para obtener la abundancia de fitoplancton en micromoles por metro cuadrado al segundo. 
 
 # Resultados 
 
@@ -97,7 +101,7 @@ El Perú es un país que se encuentra en una zona tropical, sin embargo no posee u
 Debido a la gran importancia de la regulación atmosférica que posee nuestro mar, su estudio es necesario y es por ello que se toman constantemente medidas de la temperatura del mar a lo largo de series de tiempo muy extensas. En este estudio se concentra la información obtenida en el año 1990.
 
 
-```{r check, fig.width=5, fig.height=5, fig.cap=" ",echo=FALSE}
+```{r check, fig.width=5, fig.height=5, fig.cap=" ",echo=FALSE, fig.align="center"}
 
 par(oma=c(0,0,0,2))
 
