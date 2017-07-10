@@ -7,7 +7,6 @@ keep_md: true
 
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -58,6 +57,7 @@ promsst90 = apply(sst1990, MARGIN = c(1,2), FUN=mean)
 promsss90 = apply(sss1990, MARGIN = c(1,2), FUN=mean)
 promlphy90 = apply(lphy1990, MARGIN = c(1,2), FUN=mean)
 promsphy90 = apply(sphy1990, MARGIN = c(1,2), FUN=mean)
+promtodofito = apply(fito1990, MARGIN = c(1,2), FUN=mean)
 
 #PROMEDIO DATOS TOTAL 1959 - 2005
 
@@ -73,49 +73,51 @@ anomsss90 = promsss - promsss90
 anomlphy90 = promlphy - promlphy90
 anomsphy90 = promsphy - promsphy90
 
-
-
 ```
-
 
 # Introducción
 
-Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990. Se utilizaron datos de temperatura superficial del mar (TSM), salinidad en UPS y fitoplancton pequeño y grande. Los gráficos se realizaron con Rstudio. 
+Se realizó el análisis de las condiciones oceánicas frente a las costas de Perú durante el año 1990. Se utilizaron datos de temperatura superficial del mar (TSM), salinidad en UPS y fitoplancton pequeño y grande (micromol por metro cuadrado por segundo). Los gráficos se realizaron con Rstudio. 
+
 
 # Materiales y métodos
 
+Para lograr realizar los gráficos que caracterizan las costas de Perú durante 1990 se proporcionaron 4 bases de datos. La propiedad que mejor describe el ecosistema costero es la temperatura superficial del mar que se extrajo del archivo "sst.nc4" como temperatura potencial superficial. Las unidades se encontraban en grados celcius por lo que no se tuvo que hacer ninguna conversión. De este mismo archivo de temperaturas se extrajeron los márgenes de latitud y longitud que se recortaron para realizar solo el análisis en el mar peruano. 
 
+La serie de tiempo de datos proporcionada contiene 30 años de información desde el año 1959 hasta el año 2005 en la unidad de meses. Debido a que el análisis se realizó solo del año 1990 se tuvieron que extraer los parámetros dentro de los 12 meses de 1990 (361:372, ya que la serie de meses iniciaba en 0 hasta 552). El parámetro de tiempo del archivo de temperatura también se usó para los siguientes gráficos.
+
+El archivo sss.nc4 se utilizó para extraer los datos de salinidad en unidades UPS. Posteriormente se obtuvieron los datos de fitoplancton de los archivos lphy.c4 y sphy.nc4 que tuvieron que ser modificados para obtener la abundancia de fitoplancton en micromoles por metro cuadrado al segundo. 
 
 # Resultados 
 
 ##Análisis Temperatura Superficial del Mar
 
-El Perú es un país que se encuentra en una zona tropical, sin embargo no posee un clima tropical lo que se debe a la temperatura del mar que influencia la temperatura del aire y a su vez crea una atmósfera estable.
+El Perú es un país que se encuentra en una zona tropical, sin embargo no posee un clima tropical lo que se debe a la temperatura del mar que influencia la temperatura del aire y a su vez crea una atmósfera estable. Esta atmósfera estable se caracteriza por una barrera de nubes que cubre la mayor parte de la costa peruana. Los vientos cálidos no pueden atravesar esta barrera y a su vez esta también refleja gran cantidad de la radiación solar que calentaría el mar. 
 
-Debido a la gran importancia de la regulación atmosférica que posee nuestro mar, su estudio es necesario y es por ello que se toman constantemente medidas de la temperatura del mar a lo largo de series de tiempo muy extensas. En este estudio se concentra la información obtenida en el año 1990. 
+Debido a la gran importancia de la regulación atmosférica que posee nuestro mar, su estudio es necesario y es por ello que se toman constantemente medidas de la temperatura del mar a lo largo de series de tiempo muy extensas. En este estudio se concentra la información obtenida en el año 1990.
 
 
-```{r check, fig.width=6, fig.height=6, fig.cap=" ",echo=FALSE}
+```{r check, fig.width=5, fig.height=5, fig.cap=" ",echo=FALSE}
 
-#par(oma=c(0,0,0,1))
+par(oma=c(0,0,0,2))
 
 image.map(lon, lat, promsst90, legend.width = 0.6, legend.lab = "°C")
 title("Distribución de temperaturas en el año 1990")
 
 ```
-En el gráfico de distribución de temperaturas en el año 1990 se observa que a lo largo de la costa peruana las temperaturas no sobrepasan los 24°C. y que a partir de la costa central las temperaturas bajan hasta los 20°C y menos. 
+En el gráfico de distribución de temperaturas en el año 1990 se observa que a lo largo de la costa peruana las temperaturas no sobrepasan los 24°C. y que a partir de la costa central las temperaturas bajan hasta los 20°C y menos. Sim embargo, este resultado podría estár sesgado ya que el promedio de la temperatura total del año contiene tanto los meses de verano, con anomalías cálidas, como los meses de inverno, con anomalías frías. Según la bibliografía el año 1990 presenta anomalías frías predominantes, lo que se espera ver en los siguientes gráficos. 
 
-```{r , fig.width=4, fig.height=4, fig.cap=" ",echo=FALSE, fig.align="center"}
+```{r , fig.width=5, fig.height=5, fig.cap=" ",echo=FALSE, fig.align="center"}
 
-#par(oma=c(0,0,0,1))
+#par(oma=c(0,0,0,2))
 
-image.map(lon, lat, anomsst90)
+image.map(lon, lat, anomsst90, legend.width = 0.6, legend.lab = "°C")
 title("Anomalías T° 1990")
 
 ```
-Cuando comparamos el año 1990 con el resto de los datos proporcionados que abarcan 46 años de nuestreo de TSM, se puede observar una anomalía negativa en el norte de la costa peruana lo que indicaría que es un año con tendencia fría. 
+Cuando comparamos el año 1990 con el resto de los datos proporcionados que abarcan 46 años de nuestreo de TSM, se puede observar una anomalía negativa en el norte de la costa peruana lo que indicaría que es un año con tendencia fría como menciona la bibliografía consultada. 
 
-```{r , fig.width=8, fig.height=6, fig.cap="VARIACIÓN DE LA TEMPERATURA DURANTE TODOS LOS MESES DE 1990 ",echo=FALSE, fig.align="center"}
+```{r , fig.width=8, fig.height=6, fig.cap="EVOLUCIÓN MENSUAL DE LA TEMPERATURA DURANTE EL AÑO 1990 ",echo=FALSE, fig.align="center"}
 meses = rep(1:12, length=length(t1990))
 
 sst_mes= array(dim=c(dim(sst)[1:2], 12)) 
@@ -160,7 +162,9 @@ axis(1, at=1:12, labels=month.name)
 box()
 ```
 
-En el diagrama de anomalías a lo largo del año 1990 se puede identificar fácilmente que la mayor anomalía de temperatura se da en el mes de marzo alcanzando más de 3 grados de anomalía. Por otro lado en el mes de setiembre se encuentra la mayor anomalía negativa alcanzando temperaturas con anomalías negativas menores a -2°C.
+En el diagrama hovmoller de anomalías a lo largo del año 1990 se puede identificar fácilmente que la mayor anomalía de temperatura se da en el mes de marzo alcanzando más de 3 grados de anomalía. Por otro lado en el mes de setiembre se encuentra la mayor anomalía negativa alcanzando temperaturas con anomalías negativas menores a -2°C.
+
+Las anomalías frías fueron más extensas a lo largo de la costa peruana y también en el tiempo ya que la mayor predominancia en el año es de anomalías frías (desde junio hasta diciembre). Las anomalías positivas fueron más intensas hasta los 10°S y en los meses de marzo y abril.  
 
 ##Análisis de Salinidad
 
@@ -174,19 +178,15 @@ image.map(lon, lat, anomsss90, legend.lab = "UPS")
 
 ```
 
-El año 1990 presenta una salinidad promedio de 35 UPS, este valor está dentro de las salinidades que son consideradas normales para el agua de mar, sin embargo, para el gráfico de anomalías se observa una ligera anomalía en el promedio, es necesario analizar cada mes para localizar en qué momento del año se desarrolla dicha anomalía.
+El año 1990 presenta una salinidad alta mayor a 35 UPS, sin embargo, para el gráfico de anomalías se observa una ligera anomalía negativa en el promedio, es necesario analizar cada mes para localizar en qué momento del año se desarrolla dicha anomalía.
+
+Esto coincide con la bibliografía que menciona que las salinidades estuvieron por encima de 35.1%. que en general presenta valores altos debido a la predominancia de Aguas Subtropicales Superficiales. La disminución hasta 34.6 que se observa en el siguiente gráfico en el mes de abril podría explicarse con la presencia de aguas costeras frías o también aguas de surgencia.
 
 ```{r , fig.width=8, fig.height=7, fig.cap=" Salinidad mensual durante 1990 (UPS) ",echo=FALSE, fig.align="center"}
 
 sss_mes= array(dim=c(dim(sss)[1:2], 12)) 
 
-#par(mfrow=c(3,4), mar=c(4,4,1,1))
-#for (i in 1:12){
-  #sss_mes[,,i] = apply(sss[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
-  #image.map(lon, lat, sss_mes[,,i], main=paste(month.name[i]))
-#}
-
-par(mfrow=c(3,4), mar=c(3,3,3,4)) #se coloca partición del gráfico antes de realizar el for
+par(mfrow=c(3,4), mar=c(3,3,3,4)) 
 
 for (i in 1:4){
   sss_mes[,,i] = apply(sss[,, meses==i], MARGIN=c(1,2), FUN=mean, na.rm=TRUE)
@@ -208,18 +208,27 @@ Como se observa en la imagen superior la salinidad disminuye en los meses de mar
 
 ```{r , fig.width=8, fig.height=7, fig.cap=" Temperatura vs Salinidad ",echo=FALSE, fig.align="center"}
 
-par(mfrow=c(2,2), mar=c(4,4,1,1))
+par(mfrow=c(2,2), mar=c(4,4,1,2))
 image.map(lon, lat, sst_mes[,,1], main=paste(month.name[1]))
 image.map(lon, lat, sss_mes[,,1], main=paste(month.name[1]))
 image.map(lon, lat, sst_mes[,,4], main=paste(month.name[4]))
 image.map(lon, lat, sss_mes[,,4], main=paste(month.name[4]))
 
 ```
+Las bajas salinidades están asociadas a una disminución de la temperatura en el mes de abril, sin embargo, lo contrario ocurre en el mes de enero estas diferencias podrían estar asociadas a corrientes.
+
 ##Análisis de Producción primaria
 
 ###Promedio general de fitoplancton
+```{r , fig.width=5, fig.height=5, fig.cap=" ",echo=FALSE, fig.align="center"}
+par(oma=c(0,0,0,2))
+image.map(lon, lat, promtodofito, main="Promedio total fitoplancton 1990", legend.lab = "µmol C m-2 s-1", legend.width = 0.5)
+```
+
+
 ```{r , fig.width=8, fig.height=3, fig.cap=" Fitoplancton pequeño vs grande micromol/m2/s ",echo=FALSE, fig.align="center"}
-par(mfrow=c(1,2), mar=c(4,4,1,1))
+
+par(mfrow=c(1,2), mar=c(4,4,1,2))
 
   image.map(lon, lat, promsphy90, main="Fitoplancton pequeño")
   image.map(lon, lat, promlphy90, main="Fitoplancton grande")
